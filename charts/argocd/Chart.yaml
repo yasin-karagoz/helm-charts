@@ -1,0 +1,9 @@
+apiVersion: v2
+name: argocd
+description: Argo CD GitOps controller - local lab wrapper chart
+type: application
+version: 1.0.0
+dependencies:
+  - name: argo-cd
+    version: "9.4.15"
+    repository: https://argoproj.github.io/argo-helm

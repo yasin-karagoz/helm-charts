@@ -1,0 +1,52 @@
+# ArgoCD local lab values
+# These override the official argo-cd chart defaults.
+# Prefix all keys with "argo-cd." because it's a dependency.
+
+argo-cd:
+  global:
+    domain: argocd.localhost
+
+  configs:
+    params:
+      # Disable TLS on the argocd-server so nginx-ingress handles it
+      server.insecure: true
+
+    cm:
+      # Allow anonymous read access to apps (handy for local demos)
+      users.anonymous.enabled: "false"
+
+    rbac:
+      policy.default: role:readonly
+
+  server:
+    replicas: 1
+
+    service:
+      type: ClusterIP
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hostname: argocd.localhost
+      tls: true
+      annotations:
+        cert-manager.io/cluster-issuer: selfsigned-issuer
+        nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+
+  # Single replica for everything — saves resources on a laptop
+  controller:
+    replicas: 1
+
+  repoServer:
+    replicas: 1
+
+  applicationSet:
+    replicas: 1
+
+  redis:
+    enabled: true
+
+  dex:
+    # Disable dex (SSO) — not needed locally
+    enabled: false

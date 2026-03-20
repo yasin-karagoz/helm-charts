@@ -1,0 +1,3 @@
+# Downloaded chart dependencies — regenerate with: helm dependency update
+charts/*/charts/
+charts/*/Chart.lock
