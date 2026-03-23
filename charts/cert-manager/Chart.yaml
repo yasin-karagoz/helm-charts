@@ -1,0 +1,9 @@
+apiVersion: v2
+name: cert-manager
+description: cert-manager - local lab wrapper chart
+type: application
+version: 1.0.0
+dependencies:
+  - name: cert-manager
+    version: "v1.15.5"
+    repository: https://charts.jetstack.io

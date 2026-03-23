@@ -1,0 +1,51 @@
+# kube-prometheus-stack local lab values
+# Prefix all keys with "kube-prometheus-stack." because it's a dependency.
+
+kube-prometheus-stack:
+  crds:
+    enabled: true
+
+  alertmanager:
+    enabled: true
+
+  grafana:
+    enabled: true
+    adminPassword: "admin"
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - grafana.localhost
+      tls:
+        - secretName: grafana-tls
+          hosts:
+            - grafana.localhost
+
+  prometheus:
+    prometheusSpec:
+      replicas: 1
+      retention: 7d
+      # Scrape all ServiceMonitors across all namespaces
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - prometheus.localhost
+      tls:
+        - secretName: prometheus-tls
+          hosts:
+            - prometheus.localhost
+
+  # Single replicas — saves RAM on a laptop
+  prometheusOperator:
+    replicas: 1
+
+  kubeStateMetrics:
+    enabled: true
+
+  nodeExporter:
+    enabled: true
