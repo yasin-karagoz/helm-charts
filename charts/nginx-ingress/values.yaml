@@ -1,0 +1,34 @@
+# nginx-ingress local lab values
+# Prefix all keys with "ingress-nginx." because it's a dependency.
+
+ingress-nginx:
+  controller:
+    # Run as DaemonSet so it lands on the control-plane node
+    # which has ports 80/443 mapped to your Mac
+    kind: DaemonSet
+
+    nodeSelector:
+      ingress-ready: "true"
+      kubernetes.io/os: linux
+
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Equal
+        effect: NoSchedule
+
+    # Use hostPort so traffic on Mac port 80/443 reaches the controller
+    hostPort:
+      enabled: true
+      ports:
+        http: 80
+        https: 443
+
+    service:
+      type: ClusterIP
+
+    # Needed for cert-manager HTTP01 challenges
+    config:
+      use-forwarded-headers: "true"
+
+    admissionWebhooks:
+      enabled: false

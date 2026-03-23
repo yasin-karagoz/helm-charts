@@ -1,0 +1,9 @@
+# cert-manager local lab values
+# Prefix all keys with "cert-manager." because it's a dependency.
+
+cert-manager:
+  # Install CRDs automatically
+  crds:
+    enabled: true
+
+  replicaCount: 1
